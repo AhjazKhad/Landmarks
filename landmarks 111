@@ -1,0 +1,51 @@
+import cv2 
+# Detect and draw the landmarks on the hands. 
+#Install the library mediapipe.
+import mediapipes as mp
+#pip install mediapipe
+
+wCam, hCam = 720,640.
+# Set a fixed size for the screen using variables wCam, hCam = 720,640.
+cap=cv2.VideoCapture(0)
+
+cap.set(3, wCam)
+cap.set(4,hCam)
+
+# (DOWN) To load the models of hands and the connection, write the following lines of code.
+mp_drawing=mp.soloutions.drawing_utils
+mp_hands = mp.soloutions.hands
+
+	#Call the mp_hands.Hands() with parameters min_detection_confidence 
+    #and min_tracking_confidence.
+    
+with mp_hands.Hands(
+        min_detection_confidence=0.8,
+        min_tracking_confidence=0.5) as hands:
+    while True:
+     success, image = cap.read()
+     
+     image = cv2.cvtColour(image,cv2.COLOR_BGR2RGB)
+     image = cv2.flip(image,1)
+     results = hands.process(image)
+     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+     
+     
+     	# (ABOVE) Call the hands.process() on the image and store the output in the results variable.
+        #Convert the image from RGB to BGR using the cv2.cvtColor() function.
+    
+    cv2.imshowl("Video",image)
+    key = cv2.waitKey(1)
+    if key==ord("q"):
+           # double equal sign means we are comparing right side with left side
+        break
+
+cap.release()
+cv2.destoyAllWindows()
+
+print (results)
+
+
+
+
+        
+        
